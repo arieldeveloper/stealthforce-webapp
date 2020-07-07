@@ -3,7 +3,6 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django import forms
 from django.contrib.auth import get_user_model
-
 User = get_user_model() #use the custom user model instead
 
 class CreateUserForm(UserCreationForm):
@@ -21,3 +20,10 @@ class CreateUserForm(UserCreationForm):
 
 class LoginUserForm(AuthenticationForm):
     pass
+
+class ProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email']
+
+

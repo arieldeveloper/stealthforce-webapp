@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import CreateUserForm, LoginUserForm #custom usercreationform
+from .forms import CreateUserForm, LoginUserForm, ProfileEditForm#custom usercreationform
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -43,3 +43,14 @@ def user_profile_view(request):
     if request.user.is_authenticated:
         pass
     return render(request, "users/profile.html")
+
+@login_required(login_url='login')
+def account_edit_view(request):
+    if request.method == "POST":
+        form = ProfileEditForm(request.POST, instance=request.user)
+        if form.is_valid:
+            form.save()
+            return redirect('profile')
+    else:
+        form = ProfileEditForm(instance=request.user)
+    return render(request, "users/account-edit.html", {'form':form})

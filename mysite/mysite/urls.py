@@ -23,6 +23,7 @@ urlpatterns = [
     path('accounts/logout/', user_views.logout_view, name='logout'),
     path('', main_app_views.index, name='home'), #main homepage
     path('admin/', admin.site.urls),
+    path('accounts/edit/', user_views.account_edit_view, name='edit'),
     path('accounts/profile/', user_views.user_profile_view, name="profile"),
     path('accounts/register/', user_views.register_view, name='register'),
     path('accounts/login/', user_views.login_view, name='login'),

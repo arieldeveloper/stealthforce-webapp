@@ -2,8 +2,14 @@
 {% block body %}
 
 
-<h2>Profile</h2>
-    <a href="/accounts/edit/">Edit Profile</a>
+<h2>Profile Edit</h2>
+<form method="POST">
+{% csrf_token %}
+{{ form.as_p }}
+
+<input type="submit" name="Send Email">
+</form>
+
 {% for message in messages %}
 <p>{{ message }}</p>
 {% endfor %}
