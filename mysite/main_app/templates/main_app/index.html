@@ -1,0 +1,12 @@
+{% extends 'main_app/base.html' %}
+{% block body %}
+  <h2>Home</h2>
+{% if user.is_authenticated %}
+<p>Hi {{ request.user }}</p>
+<a href="accounts/profile/">profile</a>
+<a href="accounts/logout/">logout</a>
+{% else %}
+<a href="accounts/login/">login</a>
+<a href="accounts/register/">register</a>
+{% endif %}
+{% endblock %}
