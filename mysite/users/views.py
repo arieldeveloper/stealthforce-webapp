@@ -3,6 +3,7 @@ from .forms import CreateUserForm, LoginUserForm, ProfileEditForm#custom usercre
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 def register_view(request):
     if request.user.is_authenticated:
         return redirect("home")
@@ -49,8 +50,12 @@ def account_edit_view(request):
     if request.method == "POST":
         form = ProfileEditForm(request.POST, instance=request.user)
         if form.is_valid:
-            form.save()
-            return redirect('profile')
+            #Check if they made changes to the data or not
+            if form.has_changed():
+                form.save()
+                return redirect('profile')
+            else:
+                messages.error(request, 'You have not made any changes.')
     else:
         form = ProfileEditForm(instance=request.user)
     return render(request, "users/account-edit.html", {'form':form})

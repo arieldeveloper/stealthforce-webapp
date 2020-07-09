@@ -1,0 +1,8 @@
+{% extends 'main_app/base.html' %}
+{% block body %}
+  <h2>Feed Item</h2>
+    {{ object.owner.username }}
+    <br>
+    {{ object.caption }}
+    <a href="/">Home</a>
+{% endblock %}

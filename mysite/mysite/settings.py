@@ -29,6 +29,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'main_app.apps.MainAppConfig',
     'users.apps.UsersConfig',
+    'feed.apps.FeedConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

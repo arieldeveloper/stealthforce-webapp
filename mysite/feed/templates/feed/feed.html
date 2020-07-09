@@ -1,0 +1,31 @@
+{% extends 'main_app/base.html' %}
+{% block body %}
+  <h2>Feed</h2>
+     {% for feed_post in feed_posts %}
+         <br>
+        {{ feed_post.owner.username }}
+         <p>
+         {% if feed_post.like_count > 1 or feed_post.like_count == 0 %}
+            {{ feed_post.like_count }}  likes </p>
+             {{ feed_post.caption }}
+        {% endif %}
+           {% if feed_post.like_count == 1 %}
+            <p>{{ feed_post.like_count }} like
+               {{ feed_post.caption }}
+        {% endif %}
+
+    {% endfor %}
+
+{% if user.is_authenticated %}
+<p>Hi {{ request.user }}</p>
+<a href="accounts/profile/">profile</a>
+<a href="accounts/logout/">logout</a>
+    <a href="p/new/">New Post</a>
+{% else %}
+<a href="accounts/login/">login</a>
+<a href="accounts/register/">register</a>
+
+
+{% endif %}
+
+{% endblock %}
