@@ -6,12 +6,11 @@
         {{ feed_post.owner.username }}
          <p>
          {% if feed_post.like_count > 1 or feed_post.like_count == 0 %}
-            {{ feed_post.like_count }}  likes </p>
-             {{ feed_post.caption }}
+            {{ feed_post.like_count }}  likes  <a href="{% url 'feed-detail' feed_post.id %}"> {{ feed_post.caption }}</a> </p>
+
         {% endif %}
            {% if feed_post.like_count == 1 %}
-            <p>{{ feed_post.like_count }} like
-               {{ feed_post.caption }}
+            <p>{{ feed_post.like_count }} like <a href="{% url 'feed-detail' feed_post.id %}"> {{ feed_post.caption }}</a></p>
         {% endif %}
 
     {% endfor %}

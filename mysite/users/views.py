@@ -52,8 +52,11 @@ def account_edit_view(request):
         if form.is_valid:
             #Check if they made changes to the data or not
             if form.has_changed():
-                form.save()
-                return redirect('profile')
+                try:
+                    form.save()
+                    return redirect('profile')
+                except:
+                    pass #displays the standard message from django
             else:
                 messages.error(request, 'You have not made any changes.')
     else:

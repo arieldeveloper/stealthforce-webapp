@@ -7,12 +7,14 @@
 {% csrf_token %}
 {{ form.as_p }}
 
-<input type="submit" name="Send Email">
+<input type="submit" name="Send Email" value="Submit">
 </form>
-
-{% for message in messages %}
-<p>{{ message }}</p>
-{% endfor %}
-
-
+    {% for field in form %}
+        {% for error in field.errors %}
+            {{ error }}
+        {% endfor %}
+    {% endfor %}
+    {% for message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
 {% endblock %}

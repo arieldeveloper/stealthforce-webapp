@@ -4,5 +4,9 @@
     {{ object.owner.username }}
     <br>
     {{ object.caption }}
+    {% if object.owner == user %}
+        <a href="{% url 'feed-detail' object.id %}update/">Update</a>
+        <a href="{% url 'feed-detail' object.id %}delete/">Delete</a>
+    {% endif  %}
     <a href="/">Home</a>
 {% endblock %}

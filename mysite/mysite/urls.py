@@ -25,7 +25,9 @@ urlpatterns = [
     path('', feed_views.FeedListView.as_view(), name='home'), #main homepage
     path('admin/', admin.site.urls),
     path('p/new/', feed_views.ItemCreateView.as_view(template_name='feed/create-item.html'), name="create-item"),
-    path('p/<int:pk>/', feed_views.FeedItemDetailView.as_view(template_name="feed/feed-item.html"), name='feed-detail-view'),
+    path('p/<int:pk>/update/', feed_views.ItemUpdateView.as_view(), name='item-update'),
+    path('p/<int:pk>/', feed_views.FeedItemDetailView.as_view(template_name="feed/feed-item.html"), name='feed-detail'),
+    path('p/<int:pk>/delete/', feed_views.FeedItemDeleteView.as_view(template_name='feed/delete-item.html'), name="item-delete"),
     path('accounts/edit/', user_views.account_edit_view, name='edit'),
     path('accounts/profile/', user_views.user_profile_view, name="profile"),
     path('accounts/register/', user_views.register_view, name='register'),
