@@ -3,8 +3,28 @@
 
 
 <h2>Profile</h2>
-    <p>Hi {{ user.username }}</a></p>
-    <a href="/accounts/edit/">Edit Profile</a>
+    <p>{{ request_user.username }} <button>Send message</button></p>
+    <p>Posts: {{ user_posts.count }}</p>
+    {% if request_user.username == user_viewed.username %}
+        <a href="/accounts/edit/">Edit Profile</a>
+    {% endif %}
+    {% if user_posts.count == 0 %}
+        <p>No posts</p>
+    {% endif %}
+     {% for user_post in user_posts %}
+         <h5>{{ user_post.number_of_likes }} Like</h5>
+        <form action = "{% url 'like' %}" method="POST">
+            {% csrf_token %}
+            <input type='hidden' name="post_id" value="{{ user_post.id }}">
+            {% if user not in user_post.liked.all %}
+                <button type="submit">Like</button>
+            {% else %}
+                <button type="submit">Unlike</button>
+            {% endif %}
+            <p> {{ user_post.owner.username }}:</p> <a href="{% url 'feed-detail' user_post.id %}"> {{ user_post.caption }}</a>
+        </form>
+    {% endfor %}
+
 {% for message in messages %}
 <p>{{ message }}</p>
 {% endfor %}

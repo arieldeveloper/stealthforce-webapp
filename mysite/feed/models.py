@@ -9,16 +9,34 @@ class FeedItem(models.Model):
     """
     Model for posts inside the feed of the homepage
     """
-
     caption = models.CharField(max_length=255, blank=True, null=True) #Allow user
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    like_count = models.PositiveIntegerField(default=0)
     # image_content = models.ImageField(upload_to='profile_pics')
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now_add=True)
+    liked = models.ManyToManyField(User, default=None, blank=True, related_name='liked')
 
     def __unicode__(self):
         return self.owner
 
     def get_absolute_url(self):
         return reverse('home')
+
+    @property
+    def number_of_likes(self):
+        return self.liked.all().count()
+
+CHOICES = (
+    ('Like', 'Like'),
+    ('Unlike', 'Unlike')
+)
+class LikeModel(models.Model):
+    """
+    Like model
+    """
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(FeedItem, on_delete=models.CASCADE)
+    value = models.CharField(choices=CHOICES, default='Like', max_length=10)
+
+    def __str__(self):
+        return str(self.post)

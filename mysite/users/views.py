@@ -1,9 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import CreateUserForm, LoginUserForm, ProfileEditForm#custom usercreationform
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from feed.models import FeedItem
+from django.contrib.auth import get_user_model
+User = get_user_model() #use the custom user model instead
+
 def register_view(request):
     if request.user.is_authenticated:
         return redirect("home")
@@ -39,13 +43,6 @@ def logout_view(request):
     return redirect("/")
 
 @login_required(login_url='login')
-def user_profile_view(request):
-    #Place to show everything under this profile
-    if request.user.is_authenticated:
-        pass
-    return render(request, "users/profile.html")
-
-@login_required(login_url='login')
 def account_edit_view(request):
     if request.method == "POST":
         form = ProfileEditForm(request.POST, instance=request.user)
@@ -62,3 +59,14 @@ def account_edit_view(request):
     else:
         form = ProfileEditForm(instance=request.user)
     return render(request, "users/account-edit.html", {'form':form})
+
+def user_profile_view(request, username):
+    user_being_viewed = get_object_or_404(User, username=username)
+    posts = FeedItem.objects.filter(owner=user_being_viewed)
+
+    context = {
+        'request_user': request.user,
+        'user_viewed': user_being_viewed,
+        'user_posts': posts,
+    }
+    return render(request, "users/profile.html", context)

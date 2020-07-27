@@ -1,30 +1,27 @@
 {% extends 'main_app/base.html' %}
 {% block body %}
-  <h2>Feed</h2>
-     {% for feed_post in feed_posts %}
-         <br>
-        {{ feed_post.owner.username }}
-         <p>
-         {% if feed_post.like_count > 1 or feed_post.like_count == 0 %}
-            {{ feed_post.like_count }}  likes  <a href="{% url 'feed-detail' feed_post.id %}"> {{ feed_post.caption }}</a> </p>
-
-        {% endif %}
-           {% if feed_post.like_count == 1 %}
-            <p>{{ feed_post.like_count }} like <a href="{% url 'feed-detail' feed_post.id %}"> {{ feed_post.caption }}</a></p>
-        {% endif %}
-
-    {% endfor %}
-
-{% if user.is_authenticated %}
+    {% if user.is_authenticated %}
 <p>Hi {{ request.user }}</p>
-<a href="accounts/profile/">profile</a>
+<a href="user/{{ user.username }}">profile</a>
 <a href="accounts/logout/">logout</a>
     <a href="p/new/">New Post</a>
 {% else %}
 <a href="accounts/login/">login</a>
 <a href="accounts/register/">register</a>
-
-
 {% endif %}
+  <h2>Feed</h2>
+     {% for feed_post in feed_posts %}
+         <h5>{{ feed_post.number_of_likes }} Like</h5>
+        <form action = "{% url 'like' %}" method="POST">
+            {% csrf_token %}
+            <input type='hidden' name="post_id" value="{{ feed_post.id }}">
+            {% if user not in feed_post.liked.all %}
+                <button type="submit">Like</button>
+            {% else %}
+                <button type="submit">Unlike</button>
+            {% endif %}
+            <p> {{ feed_post.owner.username }}:</p> <a href="{% url 'feed-detail' feed_post.id %}"> {{ feed_post.caption }}</a>
+        </form>
+    {% endfor %}
 
 {% endblock %}
