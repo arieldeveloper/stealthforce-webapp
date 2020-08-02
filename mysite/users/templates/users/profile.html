@@ -3,11 +3,16 @@
 
 
 <h2>Profile</h2>
-    <p>{{ request_user.username }} <button>Send message</button></p>
-    <p>Posts: {{ user_posts.count }}</p>
-    {% if request_user.username == user_viewed.username %}
-        <a href="/accounts/edit/">Edit Profile</a>
+    <p>{{ user_viewed.username }}
+        {% if request_user.username == user_viewed.username %}
+            <button formaction="/accounts/edit/">Edit Profile</button>
+        {% else %}
+            <button>Send message</button>
     {% endif %}
+    </p>
+
+    <p>Posts: {{ user_posts.count }}</p>
+
     {% if user_posts.count == 0 %}
         <p>No posts</p>
     {% endif %}

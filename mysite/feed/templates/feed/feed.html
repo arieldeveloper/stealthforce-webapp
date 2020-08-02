@@ -20,7 +20,7 @@
             {% else %}
                 <button type="submit">Unlike</button>
             {% endif %}
-            <p> {{ feed_post.owner.username }}:</p> <a href="{% url 'feed-detail' feed_post.id %}"> {{ feed_post.caption }}</a>
+            <a href="{% url 'profile' feed_post.owner.username %}"> {{ feed_post.owner.username }}:</a><a href="{% url 'feed-detail' feed_post.id %}"> {{ feed_post.caption }}</a>
         </form>
     {% endfor %}
 

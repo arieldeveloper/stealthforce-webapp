@@ -98,16 +98,4 @@ def like_post(request):
                 like.value = 'Unlike'
             else:
                 like.value = 'Like'
-    return HttpResponseRedirect(reverse('home'))
-
-
-"""
-{ % if feed_post.like_count > 1 or feed_post.like_count == 0 %}
-{ % firstof
-"likes" as word_likes %}
-{ % endif %}
-{ % if feed_post.like_count == 1 %}
-{ % firstof
-"like" as word_likes %}
-{ % endif %}
-"""
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

@@ -22,6 +22,7 @@ from feed import views as feed_views
 from django.contrib.auth import views as auth_views
 from users import views as user_views
 from main_app import views as main_app_views
+from messaging import views as messaging_views
 
 
 
@@ -48,5 +49,6 @@ urlpatterns = [
     path('accounts/password-reset-complete/', auth_views.PasswordResetCompleteView.as_view(template_name='users/password-reset-done.html'),
          name="password_reset_complete"),
     path('user/<str:username>/', user_views.user_profile_view, name='profile'),
-
+    path('direct/inbox', messaging_views.inbox_view, name='inbox'),
+    path('direct/new', messaging_views.inbox_view, name='new-message'),
 ]

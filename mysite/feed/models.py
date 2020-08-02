@@ -19,9 +19,6 @@ class FeedItem(models.Model):
     def __unicode__(self):
         return self.owner
 
-    def get_absolute_url(self):
-        return reverse('home')
-
     @property
     def number_of_likes(self):
         return self.liked.all().count()
