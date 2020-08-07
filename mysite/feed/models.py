@@ -11,7 +11,6 @@ class FeedItem(models.Model):
     """
     caption = models.CharField(max_length=255, blank=True, null=True) #Allow user
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    # image_content = models.ImageField(upload_to='profile_pics')
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now_add=True)
     liked = models.ManyToManyField(User, default=None, blank=True, related_name='liked')
@@ -37,3 +36,4 @@ class LikeModel(models.Model):
 
     def __str__(self):
         return str(self.post)
+

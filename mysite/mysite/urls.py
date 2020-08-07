@@ -50,5 +50,5 @@ urlpatterns = [
          name="password_reset_complete"),
     path('user/<str:username>/', user_views.user_profile_view, name='profile'),
     path('direct/inbox', messaging_views.inbox_view, name='inbox'),
-    path('direct/new', messaging_views.inbox_view, name='new-message'),
+    path('direct/new', messaging_views.start_direct_message, name='new-message'),
 ]

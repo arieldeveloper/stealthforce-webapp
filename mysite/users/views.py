@@ -63,10 +63,18 @@ def account_edit_view(request):
 def user_profile_view(request, username):
     user_being_viewed = get_object_or_404(User, username=username)
     posts = FeedItem.objects.filter(owner=user_being_viewed)
-
+    if request.method == "POST":
+        follow(user_being_viewed, request.user)
     context = {
         'request_user': request.user,
         'user_viewed': user_being_viewed,
         'user_posts': posts,
     }
     return render(request, "users/profile.html", context)
+
+def follow(userBeingFollowed, follower):
+    if follower not in userBeingFollowed.followers.all():
+        userBeingFollowed.followers.add(follower)
+    elif follower in userBeingFollowed.followers.all():
+        userBeingFollowed.followers.remove(follower)
+

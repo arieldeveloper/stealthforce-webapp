@@ -4,8 +4,8 @@ from django.views.generic import (ListView,
 from .models import FeedItem, LikeModel
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import get_user_model
-from django.urls import reverse
 User = get_user_model() #use the custom user model instead
+from django.urls import reverse
 from django.http import HttpResponseRedirect
 
 # Create your views here.
@@ -36,6 +36,8 @@ class ItemCreateView(LoginRequiredMixin, CreateView):
     template_name = 'feed/create-item.html'
     fields = ['caption']
 
+    def get_success_url(self):
+        return reverse('home')
 
     def form_valid(self, form):
         form.instance.owner = self.request.user

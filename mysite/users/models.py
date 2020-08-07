@@ -37,7 +37,7 @@ class Account(AbstractBaseUser):
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-
+    followers = models.ManyToManyField("Account", blank=True, symmetrical=False)
     USERNAME_FIELD = 'email' #allows user to login with email instead of username/id
     REQUIRED_FIELDS = ['username']
 
