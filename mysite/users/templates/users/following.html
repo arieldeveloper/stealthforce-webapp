@@ -1,0 +1,22 @@
+{% extends 'main_app/base.html' %}
+{% block body %}
+
+<h2>{{ user.username }}'s Following</h2>
+    {% for user_following in users_following %}
+             <a href="/user/{{ user_following.username }}">{{ user_following.username }}</a>
+            {% if request.user.username == user_following.username %}
+            {% else %}
+                <form method="POST" action="/user/{{user.username}}/following">
+                 {% csrf_token %}
+                    <input type="hidden" name="hidden_input" value="{{ user_following }}"/>
+                    {% if request.user in user_following.return_followers %}
+                        <button type="submit">Unfollow</button>
+                    {% else %}
+                        <button type="submit">Follow</button>
+                    {% endif %}
+                </form>
+            {% endif %}
+        <br>
+  {% endfor %}
+
+{% endblock %}

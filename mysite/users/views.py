@@ -63,8 +63,11 @@ def account_edit_view(request):
 def user_profile_view(request, username):
     user_being_viewed = get_object_or_404(User, username=username)
     posts = FeedItem.objects.filter(owner=user_being_viewed)
-    if request.method == "POST":
-        follow(user_being_viewed, request.user)
+    if 'follow' in request.POST or 'unfollow' in request.POST:
+        follow_or_unfollow(user_being_viewed, request.user)
+    elif 'message' in request.POST:
+        # do unsubscribe
+        pass
     context = {
         'request_user': request.user,
         'user_viewed': user_being_viewed,
@@ -72,9 +75,32 @@ def user_profile_view(request, username):
     }
     return render(request, "users/profile.html", context)
 
-def follow(userBeingFollowed, follower):
+def followers_view(request, username):
+    user = get_object_or_404(User, username=username)
+    followers = user.followers.all()
+    if request.method == "POST":
+        the_user = User.objects.get(email=request.POST.get('hidden_input'))
+        follow_or_unfollow(the_user, request.user)
+
+
+    return render(request, "users/followers.html", {'user':user, 'user_followers':followers})
+
+
+def following_view(request, username):
+    user = get_object_or_404(User, username=username)
+    following = user.following.all()
+    if request.method == "POST":
+        the_user = User.objects.get(email=request.POST.get('hidden_input'))
+        follow_or_unfollow(the_user, request.user)
+
+    return render(request, "users/following.html", {'user':user, 'users_following':following})
+
+def follow_or_unfollow(userBeingFollowed, follower):
     if follower not in userBeingFollowed.followers.all():
         userBeingFollowed.followers.add(follower)
+        follower.following.add(userBeingFollowed)
+
     elif follower in userBeingFollowed.followers.all():
         userBeingFollowed.followers.remove(follower)
+        follower.following.remove(userBeingFollowed)
 

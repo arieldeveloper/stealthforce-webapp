@@ -36,4 +36,3 @@ class LikeModel(models.Model):
 
     def __str__(self):
         return str(self.post)
-

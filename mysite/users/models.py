@@ -37,7 +37,8 @@ class Account(AbstractBaseUser):
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-    followers = models.ManyToManyField("Account", blank=True, symmetrical=False)
+    followers = models.ManyToManyField("Account", blank=True, symmetrical=False, related_name="people_followers")
+    following = models.ManyToManyField("Account", blank=True, symmetrical=False, related_name="people_following")
     USERNAME_FIELD = 'email' #allows user to login with email instead of username/id
     REQUIRED_FIELDS = ['username']
 
@@ -51,3 +52,10 @@ class Account(AbstractBaseUser):
 
     def has_module_perms(self, app_Label):
         return True
+    @property
+    def return_followers(self):
+        return list(self.followers.all())
+
+    @property
+    def return_following(self):
+        return list(self.following.all())

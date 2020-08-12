@@ -1,7 +1,6 @@
 {% extends 'main_app/base.html' %}
 {% block body %}
 
-
 <h2>Profile</h2>
     <p>{{ user_viewed.username }}  </p>
         {% if request_user.username == user_viewed.username %}
@@ -12,16 +11,15 @@
             <form method="POST" action="">
              {% csrf_token %}
                 {% if request_user in user_viewed.followers.all %}
-                    <button type="submit">Unfollow</button>
-                    <button>Send message</button>
+                    <button type="submit" name="unfollow">Unfollow</button>
+                    <button type="submit" name="message">Message</button>
                 {% else %}
-                    <button type="submit">Follow</button>
-
+                    <button type="submit" name="follow">Follow</button>
                     {% endif %}
             </form>
         {% endif %}
 
-    <p>{{ user_posts.count }} posts {{ user_viewed.followers.count }} followers 25 following </p>
+    <p>{{ user_posts.count }} posts {{ user_viewed.followers.count }} <a href="/user/{{ user_viewed.username }}/followers">Followers</a> {{ user_viewed.following.count }} <a href="/user/{{ user_viewed.username }}/following">Following</a></p>
 
     {% if user_posts.count == 0 %}
         <p>No posts</p>
@@ -39,6 +37,7 @@
             {% endif %}
             <p> {{ user_post.owner.username }}:</p> <a href="{% url 'feed-detail' user_post.id %}"> {{ user_post.caption }}</a>
         </form>
+
     {% endfor %}
 
 {% endblock %}
