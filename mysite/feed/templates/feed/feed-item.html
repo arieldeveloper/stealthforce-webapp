@@ -1,12 +1,28 @@
 {% extends 'main_app/base.html' %}
 {% block body %}
   <h2>Feed Item</h2>
-    {{ object.owner.username }}
-    <br>
-    {{ object.caption }}
-    {% if object.owner == user %}
-        <a href="{% url 'feed-detail' object.id %}update/">Update</a>
-        <a href="{% url 'feed-detail' object.id %}delete/">Delete</a>
+
+    {% if user_post.owner == user %}
+        <a href="{% url 'feed-detail' user_post.id %}update/">Update</a>
+        <a href="{% url 'feed-detail' user_post.id %}delete/">Delete</a>
     {% endif  %}
-    <a href="/">Home</a>
+       <h5>{{ user_post.number_of_likes }} Like</h5>
+    <form action = "{% url 'like' %}" method="POST">
+        {% csrf_token %}
+        <input type='hidden' name="post_id" value="{{ user_post.id }}">
+        {% if user not in user_post.liked.all %}
+            <button type="submit">Like</button>
+        {% else %}
+            <button type="submit">Unlike</button>
+        {% endif %}
+    </form>
+    <h3>{{ user_post.owner.username }}: {{ user_post.caption }}</h3>
+    {% for comment in comments %}
+        <p>{{ comment.username }}: {{ comment.body }}</p>
+    {% endfor %}
+    <form method="POST">
+     {% csrf_token %}
+        <input placeholder="Enter comment" name="comment_field">
+        <button type="submit">Post</button>
+    </form>
 {% endblock %}

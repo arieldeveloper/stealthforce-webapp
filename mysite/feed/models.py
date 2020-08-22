@@ -13,6 +13,7 @@ class FeedItem(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now_add=True)
+    image = models.ImageField(null=True, blank=True)
     liked = models.ManyToManyField(User, default=None, blank=True, related_name='liked')
 
     def __unicode__(self):
@@ -22,6 +23,10 @@ class FeedItem(models.Model):
     def number_of_likes(self):
         return self.liked.all().count()
 
+    @property
+    def image_url(self):
+        if self.image and hasattr(self.image, 'url'):
+            return self.image.url
 CHOICES = (
     ('Like', 'Like'),
     ('Unlike', 'Unlike')
@@ -36,3 +41,14 @@ class LikeModel(models.Model):
 
     def __str__(self):
         return str(self.post)
+
+class Comment(models.Model):
+    feedItem = models.ForeignKey(FeedItem, on_delete=models.CASCADE, related_name="comments")
+    username = models.CharField(max_length=70)
+    body = models.TextField(null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ('created',)

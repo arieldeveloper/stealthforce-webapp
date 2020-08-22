@@ -1,13 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import (ListView,
                                   DetailView, CreateView, UpdateView, DeleteView)
-from .models import FeedItem, LikeModel
+from .models import FeedItem, LikeModel, Comment
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import get_user_model
 User = get_user_model() #use the custom user model instead
 from django.urls import reverse
 from django.http import HttpResponseRedirect
-
 # Create your views here.
 from django.contrib.auth.decorators import login_required
 
@@ -25,11 +24,17 @@ class feed_view(ListView):
         context['user'] = self.request.user
         return context
 
-class FeedItemDetailView(DetailView):
-    """
-    A detailed view of the item (user post) from the feed
-    """
-    model = FeedItem
+def feed_item_view(request, pk):
+    user_post = get_object_or_404(FeedItem, id=pk)
+    comments = Comment.objects.filter(feedItem=user_post)
+    context = {"user_post":user_post, "comments":comments}
+
+    if request.method == "POST":
+        comment_body = request.POST.get('comment_field')
+        if comment_body != "": #posted empty comment
+            comment = Comment(feedItem=user_post, username=request.user.username, body=comment_body)
+            comment.save()
+    return render(request, "feed/feed-item.html", context)
 
 class ItemCreateView(LoginRequiredMixin, CreateView):
     model = FeedItem

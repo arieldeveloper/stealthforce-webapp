@@ -23,7 +23,8 @@ from django.contrib.auth import views as auth_views
 from users import views as user_views
 from main_app import views as main_app_views
 from messaging import views as messaging_views
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 app_name = 'accounts'
@@ -33,7 +34,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('p/new/', feed_views.ItemCreateView.as_view(template_name='feed/create-item.html'), name="create-item"),
     path('p/<int:pk>/update/', feed_views.ItemUpdateView.as_view(), name='item-update'),
-    path('p/<int:pk>/', feed_views.FeedItemDetailView.as_view(template_name="feed/feed-item.html"), name='feed-detail'),
+    path('p/<int:pk>/', feed_views.feed_item_view, name='feed-detail'),
     path('p/<int:pk>/delete/', feed_views.FeedItemDeleteView.as_view(template_name='feed/delete-item.html'), name="item-delete"),
     path('accounts/edit/', user_views.account_edit_view, name='edit'),
     # path('accounts/profile/', user_views.user_profile_view, name="profile"),
@@ -54,3 +55,5 @@ urlpatterns = [
     path('direct/inbox', messaging_views.inbox_view, name='inbox'),
     path('direct/new', messaging_views.start_direct_message, name='new-message'),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
