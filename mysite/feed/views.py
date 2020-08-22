@@ -8,6 +8,7 @@ User = get_user_model() #use the custom user model instead
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 # Create your views here.
+from .forms import CreatePostForm
 from django.contrib.auth.decorators import login_required
 
 class feed_view(ListView):
@@ -27,6 +28,7 @@ class feed_view(ListView):
 def feed_item_view(request, pk):
     user_post = get_object_or_404(FeedItem, id=pk)
     comments = Comment.objects.filter(feedItem=user_post)
+
     context = {"user_post":user_post, "comments":comments}
 
     if request.method == "POST":
@@ -36,17 +38,16 @@ def feed_item_view(request, pk):
             comment.save()
     return render(request, "feed/feed-item.html", context)
 
-class ItemCreateView(LoginRequiredMixin, CreateView):
-    model = FeedItem
-    template_name = 'feed/create-item.html'
-    fields = ['caption']
+def create_item_view(request):
+    form = CreatePostForm(instance=request.user)
+    if request.method == "POST":
+        form = CreatePostForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            item = FeedItem(owner=request.user, caption=form.cleaned_data['caption'], image=form.cleaned_data['image'])
+            item.save()
+            return redirect('home')
+    return render(request, 'feed/create-item.html', {'form':form})
 
-    def get_success_url(self):
-        return reverse('home')
-
-    def form_valid(self, form):
-        form.instance.owner = self.request.user
-        return super().form_valid(form) #must run the method
 
 class ItemUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = FeedItem
@@ -106,3 +107,18 @@ def like_post(request):
             else:
                 like.value = 'Like'
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
+
+
+# class ItemCreateView(LoginRequiredMixin, CreateView):
+#     model = FeedItem
+#     template_name = 'feed/create-item.html'
+#     fields = ['caption']
+#
+#     def get_success_url(self):
+#         return reverse('home')
+#
+#     def form_valid(self, form):
+#         form.instance.owner = self.request.user
+#         return super().form_valid(form) #must run the method

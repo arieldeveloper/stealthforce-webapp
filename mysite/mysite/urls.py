@@ -32,7 +32,7 @@ urlpatterns = [
     path('accounts/logout/', user_views.logout_view, name='logout'),
     path('', login_required(feed_views.feed_view.as_view(template_name="feed/feed.html")), name='home'), #main homepage
     path('admin/', admin.site.urls),
-    path('p/new/', feed_views.ItemCreateView.as_view(template_name='feed/create-item.html'), name="create-item"),
+    path('p/new/', feed_views.create_item_view, name="create-item"),
     path('p/<int:pk>/update/', feed_views.ItemUpdateView.as_view(), name='item-update'),
     path('p/<int:pk>/', feed_views.feed_item_view, name='feed-detail'),
     path('p/<int:pk>/delete/', feed_views.FeedItemDeleteView.as_view(template_name='feed/delete-item.html'), name="item-delete"),

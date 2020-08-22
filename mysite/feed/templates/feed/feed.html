@@ -1,14 +1,13 @@
 {% extends 'main_app/base.html' %}
 {% block body %}
     {% if user.is_authenticated %}
-<p>Hi {{ request.user }}</p>
-<a href="user/{{ user.username }}">profile</a>
-<a href="accounts/logout/">logout</a>
-    <a href="p/new/">New Post</a>
-{% else %}
-<a href="accounts/login/">login</a>
-<a href="accounts/register/">register</a>
-{% endif %}
+    <a href="user/{{ user.username }}">profile</a>
+    <a href="accounts/logout/">logout</a>
+        <a href="p/new/">New Post</a>
+    {% else %}
+    <a href="accounts/login/">login</a>
+    <a href="accounts/register/">register</a>
+    {% endif %}
   <h2>Feed</h2>
      {% for feed_post in feed_posts %}
         <img width="300" height="300" src="{{ feed_post.image_url|default_if_none:'#' }}" />
@@ -25,7 +24,7 @@
          <a href="{% url 'profile' feed_post.owner.username %}"> {{ feed_post.owner.username }}:</a><a href="{% url 'feed-detail' feed_post.id %}"> {{ feed_post.caption }}</a>
          <br>
          <a href="/p/{{ feed_post.id }}">view comments</a>
-
+         <br>
          <br>
     {% endfor %}
 
