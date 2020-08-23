@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +8,7 @@
         <!-- Bootstrap CSS code **commented for now
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     -->
+    <link rel="stylesheet" type='text/css' href="{% static 'css/main.css' %}" />
     {% if title %}
         <title>StealthForce - {{title}}</title>
     {% else %}
@@ -14,15 +16,28 @@
     {% endif %}
 </head>
 <body>
-<form method="get" action="/">
-<button style="font-size: 25px;">Stealthforce</button>
-    <form style="display: inline;" action="" method="GET" value="">
-    <input type="text" name="" value="" placeholder="Search"/>
-<input type="submit" name="submit" value="Search"/>
-</form>
 
-</form>
+    <div class="inline_div">
+        <a href="/"><img id="home_logo" src="{% static "logo.png" %}"></a>
+        <div id="search_bar">
+            <form action="" method="GET" value="">
+                <input type="text" name="" value="" placeholder="Search"/>
+                <input type="submit" name="submit" value="Search"/>
+            </form>
+        </div>
 
+        <div id="tool_bar">
+            {% if user.is_authenticated %}
+            <a href="user/{{ user.username }}">Profile</a>
+            <a href="accounts/logout/">Logout</a>
+                <a href="p/new/">New Post</a>
+            {% else %}
+            <a href="accounts/login/">Login</a>
+            <a href="accounts/register/">Register</a>
+            {% endif %}
+        </div>
+    </div>
+    <hr id="nav-bar-line">
 
 {% block body %}
 {% endblock %}

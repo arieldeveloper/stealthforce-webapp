@@ -123,7 +123,7 @@ MEDIA_URL = '/images/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 
 #SMTP configuration (emailing from website)
 SENDGRID_API_KEY = config('SENDGRID_API_KEY')
