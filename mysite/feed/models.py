@@ -27,6 +27,9 @@ class FeedItem(models.Model):
     def image_url(self):
         if self.image and hasattr(self.image, 'url'):
             return self.image.url
+    @property
+    def comment_count(self):
+        return Comment.objects.filter(feedItem=self).count()
 CHOICES = (
     ('Like', 'Like'),
     ('Unlike', 'Unlike')

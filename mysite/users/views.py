@@ -58,7 +58,7 @@ def account_edit_view(request):
                 messages.error(request, 'You have not made any changes.')
     else:
         form = ProfileEditForm(instance=request.user)
-    return render(request, "users/account-edit.html", {'form':form})
+    return render(request, "users/account-edit.html", {'form':form, 'user':request.user})
 
 def user_profile_view(request, username):
     user_being_viewed = get_object_or_404(User, username=username)

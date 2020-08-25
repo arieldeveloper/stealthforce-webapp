@@ -1,30 +1,44 @@
 {% extends 'main_app/base.html' %}
+{% load humanize %}
 {% block body %}
-  <h2>Feed Item</h2>
+    <div id="feed-item-detail">
+        <img width="300" height="300" src="{{ user_post.image_url|default_if_none:'#' }}" />
 
-    {% if user_post.owner == user %}
-        <a href="{% url 'feed-detail' user_post.id %}update/">Update</a>
-        <a href="{% url 'feed-detail' user_post.id %}delete/">Delete</a>
-    {% endif  %}
-       <h5>{{ user_post.number_of_likes }} Like</h5>
-    <form action = "{% url 'like' %}" method="POST">
-        {% csrf_token %}
-        <input type='hidden' name="post_id" value="{{ user_post.id }}">
-        {% if user not in user_post.liked.all %}
-            <button type="submit">Like</button>
-        {% else %}
-            <button type="submit">Unlike</button>
-        {% endif %}
-    </form>
-    <h3>{{ user_post.owner.username }}: {{ user_post.caption }}</h3>
-    {% for comment in comments %}
-        <p>{{ comment.username }}: {{ comment.body }}</p>
-    {% endfor %}
-    <form method="POST">
-     {% csrf_token %}
-        <input placeholder="Enter comment" name="comment_field">
-        <button type="submit">Post</button>
-    </form>
+        {% if user_post.owner == user %}
+            <a href="{% url 'feed-detail' user_post.id %}update/">Update</a>
+            <a href="{% url 'feed-detail' user_post.id %}delete/">Delete</a>
+        {% endif  %}
 
-    <p>{{ user_post.created_time }}</p>
+        <h5>{{ user_post.number_of_likes }} Like</h5>
+
+        <form action = "{% url 'like' %}" method="POST">
+            {% csrf_token %}
+            <input type='hidden' name="post_id" value="{{ user_post.id }}">
+            {% if user not in user_post.liked.all %}
+                <button type="submit">Like</button>
+            {% else %}
+                <button type="submit">Unlike</button>
+            {% endif %}
+        </form>
+
+        <h3>{{ user_post.owner.username }}: {{ user_post.caption }}</h3>
+
+        {% for comment in comments %}
+            <div id="comment">
+                <p>{{ comment.username }}: {{ comment.body }}</p>
+                  {% if comment.username == user.username %}
+                    <button>Delete</button>
+                  {% endif %}
+            </div>
+        {% endfor %}
+
+        <form method="POST">
+         {% csrf_token %}
+            <input placeholder="Enter comment" name="comment_field">
+            <button type="submit">Post</button>
+        </form>
+
+        <p>{{ user_post.created_time|naturaltime}}</p>
+
+    </div>
 {% endblock %}

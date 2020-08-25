@@ -39,6 +39,7 @@ class Account(AbstractBaseUser):
     is_active = models.BooleanField(default=True)
     followers = models.ManyToManyField("Account", blank=True, symmetrical=False, related_name="people_followers")
     following = models.ManyToManyField("Account", blank=True, symmetrical=False, related_name="people_following")
+    profile_picture = models.ImageField(null=True, blank=True, default = 'static/default.png')
     USERNAME_FIELD = 'email' #allows user to login with email instead of username/id
     REQUIRED_FIELDS = ['username']
 
@@ -58,4 +59,9 @@ class Account(AbstractBaseUser):
 
     @property
     def return_following(self):
-        return list(self.following.all())
+        return list(self.following.all())\
+
+    @property
+    def profile_pic_url(self):
+        if self.profile_picture and hasattr(self.profile_picture, 'url'):
+            return self.profile_picture.url

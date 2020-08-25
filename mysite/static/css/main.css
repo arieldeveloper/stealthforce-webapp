@@ -42,3 +42,15 @@ a {
 a:hover {
   color: #47afff;
 }
+
+
+#comment * {
+  display: inline;
+}
+
+#feed-item-detail {
+  margin: 3%;
+  border: 1px solid rgba(124, 128, 119, 0.37) ;
+  padding: 3%;
+  width: 40%;
+}

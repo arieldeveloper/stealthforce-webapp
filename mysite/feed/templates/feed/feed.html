@@ -3,7 +3,7 @@
     {% for feed_post in feed_posts %}
         <div class="post_div">
             <img width="300" height="300" src="{{ feed_post.image_url|default_if_none:'#' }}" />
-            <h5>{{ feed_post.number_of_likes }} Like 12 <a href="/p/{{ feed_post.id }}">Comments</a></h5>
+            <h5>{{ feed_post.number_of_likes }} Like {{ feed_post.comment_count }} <a href="/p/{{ feed_post.id }}">Comments</a></h5>
 
              <form action = "{% url 'like' %}" method="POST">
                 {% csrf_token %}

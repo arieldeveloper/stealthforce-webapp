@@ -24,6 +24,6 @@ class LoginUserForm(AuthenticationForm):
 class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['username', 'email']
+        fields = ['username', 'email', 'profile_picture']
 
 

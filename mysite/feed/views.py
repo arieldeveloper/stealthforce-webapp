@@ -63,6 +63,11 @@ class ItemUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             return True
         return False
 
+    def get_success_url(self):
+        itemNumber = self.get_object().id
+        url = '/p/' + str(itemNumber)
+        return reverse('home')
+
     def form_valid(self, form):
         form.instance.owner = self.request.user
         return super().form_valid(form) #must run the method
