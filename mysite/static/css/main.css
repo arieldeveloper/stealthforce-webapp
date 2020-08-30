@@ -54,3 +54,11 @@ a:hover {
   padding: 3%;
   width: 40%;
 }
+
+#inbox_div {
+  margin: 3%;
+}
+
+#send_message_div {
+  margin: 3%;
+}

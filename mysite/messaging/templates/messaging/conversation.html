@@ -1,0 +1,18 @@
+{% extends 'main_app/base.html' %}
+{% block body %}
+    <div id="send_message_div">
+        <h2>Messages</h2>
+        {% for message in messages %}
+            <p><b>{{ message.sender }}:</b> {{ message.message }}</p>
+        {% endfor %}
+
+        <form method="POST">
+            {% csrf_token %}
+            <p> {{ form.as_p }}</p>
+            <input name="message">
+            <button type="submit">Send Message</button>
+        </form>
+
+    </div>
+
+{% endblock %}

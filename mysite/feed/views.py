@@ -112,18 +112,3 @@ def like_post(request):
             else:
                 like.value = 'Like'
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-
-
-
-
-# class ItemCreateView(LoginRequiredMixin, CreateView):
-#     model = FeedItem
-#     template_name = 'feed/create-item.html'
-#     fields = ['caption']
-#
-#     def get_success_url(self):
-#         return reverse('home')
-#
-#     def form_valid(self, form):
-#         form.instance.owner = self.request.user
-#         return super().form_valid(form) #must run the method

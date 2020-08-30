@@ -36,6 +36,7 @@ urlpatterns = [
     path('p/<int:pk>/update/', feed_views.ItemUpdateView.as_view(), name='item-update'),
     path('p/<int:pk>/', feed_views.feed_item_view, name='feed-detail'),
     path('p/<int:pk>/delete/', feed_views.FeedItemDeleteView.as_view(template_name='feed/delete-item.html'), name="item-delete"),
+    path('direct/t/<int:pk>/', messaging_views.conversation_view, name="conversation_view"),
     path('accounts/edit/', user_views.account_edit_view, name='edit'),
     # path('accounts/profile/', user_views.user_profile_view, name="profile"),
     path('accounts/register/', user_views.register_view, name='register'),
@@ -52,8 +53,8 @@ urlpatterns = [
     path('user/<str:username>/', user_views.user_profile_view, name='profile'),
     path('user/<str:username>/followers', user_views.followers_view),
     path('user/<str:username>/following', user_views.following_view),
-    path('direct/inbox', messaging_views.inbox_view, name='inbox'),
-    path('direct/new', messaging_views.start_direct_message, name='new-message'),
+    path('direct/inbox/', messaging_views.inbox_view, name='inbox'),
+    path('direct/new/', messaging_views.start_direct_message, name='new-message'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
