@@ -4,8 +4,11 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.http import HttpResponseRedirect
 from feed.models import FeedItem
 from django.contrib.auth import get_user_model
+from messaging.models import Conversation
+from django.db.models import Q
 User = get_user_model() #use the custom user model instead
 
 def register_view(request):
@@ -63,11 +66,17 @@ def account_edit_view(request):
 def user_profile_view(request, username):
     user_being_viewed = get_object_or_404(User, username=username)
     posts = FeedItem.objects.filter(owner=user_being_viewed)
+
     if 'follow' in request.POST or 'unfollow' in request.POST:
         follow_or_unfollow(user_being_viewed, request.user)
     elif 'message' in request.POST:
-        # do unsubscribe
-        pass
+        conversation, created = Conversation.objects.get_or_create(user1=request.user, user2=user_being_viewed)
+        if created:
+            #conversation already exists
+            conversation = Conversation.objects.filter(Q(user1=request.user, user2=user_being_viewed) | Q(user1=user_being_viewed, user2=request.user))
+        redirectUrl = '/direct/t/' + str(conversation.id)
+        return HttpResponseRedirect(redirectUrl)
+
     context = {
         'request_user': request.user,
         'user_viewed': user_being_viewed,
@@ -78,10 +87,10 @@ def user_profile_view(request, username):
 def followers_view(request, username):
     user = get_object_or_404(User, username=username)
     followers = user.followers.all()
+
     if request.method == "POST":
         the_user = User.objects.get(email=request.POST.get('hidden_input'))
         follow_or_unfollow(the_user, request.user)
-
 
     return render(request, "users/followers.html", {'user':user, 'user_followers':followers})
 

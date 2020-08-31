@@ -4,7 +4,11 @@
     <h2>Inbox</h2>
 
     {% for thread in threads %}
-        <a href="/direct/t/{{ thread.id }}"><b>{{ thread.user1.username }} - {{ thread.user2.username }}</b></a>
+        {% if thread.user1 == user %}
+            <a href="/direct/t/{{ thread.id }}"><b>{{ thread.user2.username }}</b></a>
+        {% else %}
+            <a href="/direct/t/{{ thread.id }}"><b>{{ thread.user1.username }}</b></a>
+        {% endif %}
         <br>
     {% endfor %}
         </div>
