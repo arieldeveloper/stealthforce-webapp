@@ -25,22 +25,28 @@
         <p>No posts</p>
     {% endif %}
 
-     {% for user_post in user_posts %}
-             <h5>{{ user_post.number_of_likes }} Like</h5>
-            <form action = "{% url 'like' %}" method="POST">
-                {% csrf_token %}
-                <input type='hidden' name="post_id" value="{{ user_post.id }}">
-                {% if user not in user_post.liked.all %}
-                    <button type="submit">Like</button>
-                {% else %}
-                    <button type="submit">Unlike</button>
-                {% endif %}
-            </form>
-         <div class="inline_div">
-            <p> {{ user_post.owner.username }}:</p> <a href="{% url 'feed-detail' user_post.id %}"> {{ user_post.caption }}</a>
-         </div>
-     {% endfor %}
+{% for user_post in user_posts %}
+    <div class="post_div">
+        <img width="300" height="300" src="{{ user_post.image_url|default_if_none:'#' }}"/>
+        <h5>{{ user_post.number_of_likes }} Like {{ user_post.comment_count }} <a
+                href="/p/{{ user_post.id }}">Comments</a></h5>
 
+        <form action="{% url 'like' %}" method="POST">
+            {% csrf_token %}
+            <input type='hidden' name="post_id" value="{{ user_post.id }}">
+            {% if user not in user_post.liked.all %}
+                <button type="submit">Like</button>
+            {% else %}
+                <button type="submit">Unlike</button>
+            {% endif %}
+        </form>
+        <a href="{% url 'profile' user_post.owner.username %}"> {{ user_post.owner.username }}:</a><a
+            href="{% url 'feed-detail' user_post.id %}"> {{ user_post.caption }}</a>
+        <br>
+        <a href="/p/{{ user_post.id }}">view comments</a>
+        <br>
+    </div>
+    {% endfor %}
 
 
 {% endblock %}

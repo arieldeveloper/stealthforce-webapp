@@ -3,7 +3,7 @@
     <div id="send_message_div">
         <h2>Messages</h2>
         {% for message in messages %}
-            <p><b>{{ message.sender }}:</b> {{ message.message }}</p>
+            <p><b> <a href="/user/{{ message.sender.username }}">{{ message.sender.username }}:</a></b> {{ message.message }}</p>
         {% endfor %}
 
         <form method="POST">

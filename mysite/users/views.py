@@ -70,10 +70,11 @@ def user_profile_view(request, username):
     if 'follow' in request.POST or 'unfollow' in request.POST:
         follow_or_unfollow(user_being_viewed, request.user)
     elif 'message' in request.POST:
-        conversation, created = Conversation.objects.get_or_create(user1=request.user, user2=user_being_viewed)
-        if created:
-            #conversation already exists
-            conversation = Conversation.objects.filter(Q(user1=request.user, user2=user_being_viewed) | Q(user1=user_being_viewed, user2=request.user))
+        if Conversation.objects.filter(user1=request.user, user2=user_being_viewed).count() >= 1 or Conversation.objects.filter(user1=user_being_viewed, user2=request.user).count() >= 1:
+            #conversation exists
+            conversation = Conversation.objects.filter(Q(user1=request.user, user2=user_being_viewed) | Q(user1=user_being_viewed, user2=request.user))[0]
+        else:
+            conversation = Conversation(user1=request.user, user2=user_being_viewed)
         redirectUrl = '/direct/t/' + str(conversation.id)
         return HttpResponseRedirect(redirectUrl)
 
