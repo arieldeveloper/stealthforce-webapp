@@ -1,10 +1,12 @@
 {% extends 'main_app/base.html' %}
 {% block body %}
-<h2>Delete post</h2>
-<form method="POST">
-    {% csrf_token %}
-    <p>Are you sure you would like to delete this post?</p>
-    <input type="submit" class="btn-outline-danger" value="Delete Post">
-    <a href="{% url 'feed-detail' object.id %}">Cancel</a>
-</form>
+<div id="delete-post-page">
+    <h2>Delete post</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <p>Are you sure you would like to delete this post?</p>
+        <input type="submit" class="btn-outline-danger" value="Delete Post">
+        <a href="{% url 'feed-detail' object.id %}">Cancel</a>
+    </form>
+</div>
 {% endblock %}

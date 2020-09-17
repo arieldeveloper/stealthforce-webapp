@@ -1,8 +1,11 @@
 {% extends 'main_app/base.html' %}
 {% block body %}
-
+<div id="profile-page">
 <h2>Profile</h2>
+<div class="inline_div">
     <p>{{ user_viewed.username }}  </p>
+
+
         {% if request_user.username == user_viewed.username %}
             <form method="get" action="/accounts/edit/">
                 <button type="submit">Edit Profile</button>
@@ -18,8 +21,12 @@
                     {% endif %}
             </form>
         {% endif %}
-
-    <p>{{ user_posts.count }} posts {{ user_viewed.followers.count }} <a href="/user/{{ user_viewed.username }}/followers">Followers</a> {{ user_viewed.following.count }} <a href="/user/{{ user_viewed.username }}/following">Following</a></p>
+<div class="inline_div">
+    <p class="bold-text">{{ user_posts.count }}</p><p>posts</p>
+    <p class="bold-text">{{ user_viewed.followers.count }}</p><a href="/user/{{ user_viewed.username }}/followers">followers</a>
+    <p class="bold-text">{{ user_viewed.following.count }}</p><a href="/user/{{ user_viewed.username }}/following">following</a>
+</div>
+</div>
 
     {% if user_posts.count == 0 %}
         <p>No posts</p>
@@ -48,5 +55,5 @@
     </div>
     {% endfor %}
 
-
+</div>
 {% endblock %}
