@@ -62,3 +62,21 @@ a:hover {
 #send_message_div {
   margin: 3%;
 }
+
+#register-page {
+  margin: 3%;
+}
+
+#register-page * {
+  margin-top: 1%;
+}
+
+.link-to-click {
+  color: deepskyblue;
+}
+
+#password-reset-page {
+  margin:3%;
+}
+
+#login-page {  margin: 3%; }

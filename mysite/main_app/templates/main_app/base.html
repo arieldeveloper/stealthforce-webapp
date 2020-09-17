@@ -20,9 +20,10 @@
     <div class="inline_div">
         <a href="/"><img id="home_logo" src="{% static "logo.png" %}"></a>
         <div id="search_bar">
-            <form action="" method="GET" value="">
-                <input type="text" name="" value="" placeholder="Search"/>
-                <input type="submit" name="submit" value="Search"/>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input type="text" name="search_bar" value="" placeholder="Search"/>
+                <input type="submit" name="submit"/>
             </form>
         </div>
 
@@ -33,8 +34,8 @@
                 <a href="/p/new/">New Post</a>
                 <a href="/direct/inbox">Inbox</a>
             {% else %}
-                <a href="accounts/login/">Login</a>
-                <a href="accounts/register/">Register</a>
+                <a href="/accounts/login/">Login</a>
+                <a href="/accounts/register/">Register</a>
             {% endif %}
         </div>
     </div>

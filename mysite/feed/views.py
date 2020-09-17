@@ -11,6 +11,7 @@ from django.http import HttpResponseRedirect
 from .forms import CreatePostForm
 from django.contrib.auth.decorators import login_required
 
+
 class feed_view(ListView):
     """
     Main homepage list of posts
@@ -38,6 +39,8 @@ def feed_item_view(request, pk):
             comment.save()
     return render(request, "feed/feed-item.html", context)
 
+
+@login_required(login_url='login')
 def create_item_view(request):
     form = CreatePostForm(instance=request.user)
     if request.method == "POST":
@@ -72,6 +75,7 @@ class ItemUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         form.instance.owner = self.request.user
         return super().form_valid(form) #must run the method
 
+
 class FeedItemDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     """
     Delete view for deleting items posted by the user
@@ -88,11 +92,15 @@ class FeedItemDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return True
         return False
 
+
+@login_required(login_url='login')
 def liked_by_users(request):
     # Place to show everything under this profile
     liked_by_info = False #Change this
     return render(request, "feed/liked-by-users.html")
 
+
+@login_required(login_url='login')
 def like_post(request):
     user = request.user
     if request.method == "POST": #if user like button pressed

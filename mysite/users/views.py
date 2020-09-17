@@ -85,6 +85,8 @@ def user_profile_view(request, username):
     }
     return render(request, "users/profile.html", context)
 
+
+@login_required(login_url='login')
 def followers_view(request, username):
     user = get_object_or_404(User, username=username)
     followers = user.followers.all()
@@ -96,6 +98,7 @@ def followers_view(request, username):
     return render(request, "users/followers.html", {'user':user, 'user_followers':followers})
 
 
+@login_required(login_url='login')
 def following_view(request, username):
     user = get_object_or_404(User, username=username)
     following = user.following.all()

@@ -1,14 +1,18 @@
 {% extends 'main_app/base.html' %}
 {% block body %}
-<h2>Login</h2>
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" name="Register">
-    {% for message in messages %}
-    <p>{{ message }}</p>
-    {% endfor %}
-</form>
-<p>Don't have an account?<a href="/accounts/register/">Register</a></p>
-<p>Forgot your password?<a href="/accounts/password-reset/">Reset</a></p>
+    <div id="login-page">
+        <h2>Login</h2>
+        <br>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" name="Register">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </form>
+        <br>
+        <p>Don't have an account? <a class="link-to-click" href="/accounts/register/">Register</a></p>
+        <p>Forgot your password? <a class="link-to-click" href="/accounts/password-reset/">Reset</a></p>
+    </div>
 {% endblock %}

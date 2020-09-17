@@ -55,6 +55,7 @@ urlpatterns = [
     path('user/<str:username>/following', user_views.following_view),
     path('direct/inbox/', messaging_views.inbox_view, name='inbox'),
     path('direct/new/', messaging_views.start_direct_message, name='new-message'),
+    path('search/<str:keyword>/', main_app_views.search_page_view, name='search_page'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
